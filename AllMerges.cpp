@@ -2,7 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <ctime>
-#define sizee 50000
+#define sizee 3
 
 using namespace std;
 //TOP TO DOWN MERGE
@@ -44,13 +44,13 @@ void TopdownMerge(double *A,int inicio,int mid,int fin,double *B){
     }
 }
 //MERGE DIAPOSITIVA
-
+    int cont=0;
 void merge(int, int, int, vector<double> &v);
 void merge_sort(int izq, int der, vector<double> &p){
+
     int pivot;
     if (der>izq)
     {
-
         pivot = izq + ((der - izq)/2);
 
         merge_sort(izq, pivot, p);
@@ -64,23 +64,28 @@ void merge(int p, int pi, int r,vector<double> &v)
     int B[v.size()];//es un vector auxiliar
     for(int i=p;i<=r;i++)
         B[i]=v[i];
+
     int izq=p,i=p,izq2=pi+1;//var de apoyo
     while(izq<=pi){
         v[i]=B[izq];
         ++i;
         ++izq;
+        cont++;
     }
     while(izq<=pi && izq2<=r){//copiando elementos menores
         if(B[izq]<=B[izq2]){
             v[i]=B[izq];
             ++izq;
+            cont++;
         }
         else{
             v[i]=B[izq2];
             ++izq2;
+            cont++;
         }
         ++i;
     }
+
 }
 
 void swap(double &a,double &b){
@@ -120,6 +125,14 @@ void llenar(vector <double> &v,double n){
 
     for(double i=0;i<n;i++){
         v.push_back(rand()%100);
+    }
+}
+void llenar2(vector <double> &v,double n){
+    int a;
+    for(int i=0;i<n;i++){
+        cout<<i<<" : ";
+        cin>>a;
+        v.push_back(a);
     }
 }
 void CopyArray(vector<double>B,double *A){
@@ -169,25 +182,40 @@ void insertionsort(vector<double> &v,double k){
 
 int main()
 {
-    double start_s=clock();
     double *A=new double[sizee];
     double *B=new double[sizee];
     vector <double> mv;
-    llenar(mv,sizee);
-    CopyArray(mv,A);
+    double start_s1;
+    double stop_s1;
+    double start_s2;
+    double stop_s2;
+    //for(double i=0;i<=10000;i=i+1000){
+        llenar2(mv,sizee);
+        CopyArray(mv,A);
+        start_s1=clock();
+        merge_sort(0,mv.size()-1,mv);
+        cout<<"swaps: "<<cont<<endl;
+        stop_s1=clock();
+        cout << "time 1: " << (stop_s1-start_s1)/double(CLOCKS_PER_SEC)<< endl;
+        start_s2=clock();
+        BottomUpMergeSort(A,B,sizee);
+        stop_s2=clock();
+        cout << "time 2: " << (stop_s2-start_s2)/double(CLOCKS_PER_SEC)<< endl;
+        mv.clear();
+    //}
+
     //imprimir(mv);
     //cout<<"ILARI LARI EH ; OH OH OH                 OH "<<endl;
-    //merge_sort(0,mv.size()-1,mv);
+
     //insertionsort(mv,mv.size());
+    //cout<<"ILARI LARI EH ; OH OH OH                 OH "<<endl;
     //imprimir(mv);
-    BottomUpMergeSort(A,B,sizee);
+
+    //TopDownMergeSort(A,B,sizee);
     //imprimir(A);
 
-    double stop_s=clock();
-    cout << "time: " << (stop_s-start_s)/double(CLOCKS_PER_SEC)<< endl;
 
 
 
-
-   cout<<getmenor(mv);
+   //cout<<getmenor(mv);
 }
