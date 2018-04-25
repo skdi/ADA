@@ -5,7 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 using namespace std;
-//UVA 507
+//UVA 507 jill's ride
 int* suma_max(int *A,int n){
 	int e=0,d=-1;
 	int suma=0;
