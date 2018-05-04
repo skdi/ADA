@@ -2,8 +2,8 @@
 #include <ctime>
 #include <stdlib.h>
 #include <time.h>
-#include <algorithm>
-#include <functional>
+//#include <algorithm>
+//#include <functional>
 #include <array>
 #include <vector>
 unsigned t1,t2,t3,t4;
