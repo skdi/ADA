@@ -5,12 +5,16 @@
 #include <cstdint>
 #include <cmath>
 #include <math.h>
+#include <vector>
+using namespace std;
+typedef int c_matrix;
+typedef vector< vector<c_matrix> > matrix;
 //Ejer2
 #define MAXTEST 10000
 #define MAXFIB 100
 #define m 2
-using namespace std;
 
+#define uint64_t unsigned long long int
 uint64_t fibo_ejer1(uint64_t n){
 	if(n==0)
 		return 0;
@@ -92,52 +96,61 @@ int fibo_MX(int n){
       return A[0][0];
 }
 
+void CreateMatrix(matrix *&Arr,int  n,int c){
+  Arr = new matrix(n);
+  for(int i = 0; i < n; ++i)
+    (*Arr)[i].resize(c);
+}
+matrix *ProductMatrix(matrix *A, matrix *B, int n){
+  matrix * R;
+  CreateMatrix(R,n,n);
+  for(int i = 0; i < n; ++i)
+    for(int j = 0; j < n; ++j)
+      for(int k = 0; k < n; ++k)
+        (*R)[i][j] += (*A)[i][k] * ((*B)[k][j]);
+  return R;
+}
+
+
+matrix* fibo_m(int n){
+  
+    matrix *A;
+    CreateMatrix(A,m,m);
+    matrix *temp; matrix *temp2;
+
+    
+    if(n==1)
+    {
+      (*A)[0][0]=1;
+      (*A)[0][1]=1;
+      (*A)[1][0]=1;
+      (*A)[1][1]=0;
+      return A;
+    }
+    else
+    {
+      if(n%2==0){
+        A=ProductMatrix(fibo_m(n/2),fibo_m(n/2),m);
+      }
+      else 
+        A=ProductMatrix(fibo_m(n/2),fibo_m((n+1)/2),m);
+      return A;
+    }
+
+}
+
+
+
 int main(){
-	//fibo_ejer3();
-	fibo_MX(5);
+  for(int i=1;i<=10;i++){
+    cout<<(*fibo_m(i))[0][0]<<endl;
+  }
+
+	//fibo_MX(5);
 	//cout<<fiboi_ejer8();
 	return 0;
 }
 
 
 
-/*
-int[][] operator* (const int[m][m] &matrix_2)
-  {
-      int A[m][m];
-      T total=0;
 
-      for(int i = 0; i < m; i++) {
-          for(int j = 0; j < m; j++) {
-              for(int k = 0; k < m; k++) {
-                  total += (matrix_2[i][k] * matrix_2[k][j]);
-              }
-              A.m_matrix[i][j] = total;
-
-              // Limpiar el total sumado arriba
-              total = 0;
-          }
-      }
-      return A;
-  }
-int[][] fibo(int n){
-
-    int A[m][m];
-    if(n==1)
-    {
-      A[0][0]=1;
-      A[0][1]=1;
-      A[1][0]=1;
-      A[1][1]=0;
-      return A;
-    }
-    else
-    {
-      if(n%2==0)
-        A=fibo_Mx(n/2)*fibo_Mx(0.5*n);
-      else 
-      	A=fibo_Mx(n/2)*fibo_Mx((n+1)*0.5);
-      print_matrix(A);
-    }
-
-}*/
