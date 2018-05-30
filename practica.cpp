@@ -28,17 +28,23 @@ double max(vector<double> A,int n,double E){
 	}
 	return contador;
 }
+double promedio(){
 
+}
 
 int main(){
 	vector<double> A;
 	double imax;
+	double prom;
+	int N;
 	for(int n=8;n<=20;n++){
-		generador(A,pow(2,n));
-		imax=max(A,n);
-
-		A.clear();
+		for(int j=0;j<N;j++){
+			generador(A,pow(2,n));
+			imax=max(A,n);
+			A.clear();
+		}
+				
 	}
-	
+	cout<<imax/
 	return 0;
 }
