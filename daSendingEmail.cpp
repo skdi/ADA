@@ -1,106 +1,67 @@
-#include <cstdio>
-#include <cmath>
-#include <climits>
 #include <iostream>
-#include <string.h>		// For memset function
 #include <vector>
-#include <list>
-#include <stack>
 #include <queue>
 #include <string>
-#include <algorithm>
-#include <bitset>
-#include <sstream>
 #include <map>
 
 using namespace std;
-
+typedef vector<int> VI;
+typedef pair<int, int> II;
+typedef vector<vector<pair<int, int> > > VVP;
 #define FOR( i, L, U ) for(int i=(int)L ; i<=(int)U ; i++ )
 #define FORD( i, U, L ) for(int i=(int)U ; i>=(int)L ; i-- )
-
-#define SQR(x) ((x)*(x))
-
 #define INF INT_MAX
-#define EPS 1e-9
-#define PI (2*acos(0.0))
-#define TO_RAD (PI/180)
-#define TO_DEG (180/PI)
-
-#define SZ size()
-#define PB push_back
-#define PF push_front
-
-#define READ(filename)  freopen(filename, "r", stdin);
-#define WRITE(filename)  freopen(filename, "w", stdout);
-
-typedef long long LL;
-typedef vector<char> VC;
-typedef vector<int> VI;
-typedef vector<double> VD;
-typedef vector<string> VS;
-typedef vector<vector<int> > VVI;
-typedef pair<int, int> II;
-typedef map<int, int> MII;
-typedef map<string, int> MSI;
-typedef map<string, char> MSC;
-
-#define WHITE 0
-#define GRAY 1
-#define BLACK 2
 
 
-typedef vector<vector<pair<int, int> > > VVP;
-
-int nodes, edges;
+int nodos, aristas;
 VI dist;
 priority_queue<II, vector<II>, greater<II> > pq;
-VVP g;
+VVP grafo;
 
 void dijkstra(int src)
 {
-    dist = VI(nodes, INF);
-    int u,v,w,d;
+    dist = VI(nodos, INF);
+    int a,b,c,d;
     dist[src] = 0;
 
     pq.push(II(0,src));
 
     while( !pq.empty() ) {
-        u = pq.top().second;
+        a = pq.top().second;
         d = pq.top().first;
         pq.pop();
-        if(d==dist[u])/* if true then update u now and other occurences of u in pq
+        if(d==dist[a])/* if true then update a now and other occurences of a in pq
                         at this moment never will be updated*/
-            FOR(i, 0, g[u].size()-1) {
+            FOR(i, 0, grafo[a].size()-1) {
 
-                v = g[u][i].first;
-                w = g[u][i].second;
-                if( dist[u] + w < dist[v] ) {
-                    dist[v] = dist[u] + w;
-                    pq.push(II(dist[v],v));
+                b = grafo[a][i].first;
+                c = grafo[a][i].second;
+                if( dist[a] + c < dist[b] ) {
+                    dist[b] = dist[a] + c;
+                    pq.push(II(dist[b],b));
                 }
             }
     }
 }
 int main()
 {
-    //READ("input.txt");
-   // WRITE("output.txt");
 
-    int st, en, w,test, cs=1;
-    int source, target;
-    scanf("%d", &test);
-    while(test--){
-         cin >> nodes >> edges >> source >> target;
-        g = VVP(nodes);
-        FOR(i, 1, edges) {
+    int st, en, w,n_casos, cs=1;
+    int inicio, fin;
+    scanf("%d", &n_casos);
+    while(n_casos--){
+        cin >> nodos >> aristas >> inicio >> fin;
+        grafo = VVP(nodos);
+        FOR(i, 1, aristas) {
             cin >> st >> en >> w;
-            g[st].PB(II(en,w));
-            g[en].PB(II(st,w));
+            grafo[st].push_back(II(en,w));
+            grafo[en].push_back(II(st,w));
         }
-        dijkstra(source);
-        printf("Case #%d: ", cs++);
-        if(dist[target]==INF)printf("unreachable\n");
-        else printf("%d\n", dist[target]);
+        dijkstra(inicio);
+        cout<<"Case #: "<<cs++;
+        if(dist[fin]==INF)
+            cout<<"unreachable"<<endl;
+        else cout<<dist[fin]<<endl;
     }
 	return 0;
 }
